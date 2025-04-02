@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Natural Labor Assistant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: #f7f3e9;
+        }
+        h1 {
+            color: #d9534f;
+        }
+        .timer {
+            font-size: 2em;
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1.2em;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .start { background: #5cb85c; color: white; }
+        .stop { background: #d9534f; color: white; }
+        .reset { background: #f0ad4e; color: white; }
+        .breathing {
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+        .affirmations {
+            margin-top: 20px;
+            font-style: italic;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Natural Labor Assistant</h1>
+
+    <h2>Contraction Timer</h2>
+    <div class="timer" id="timer">00:00</div>
+    <button class="start" onclick="startTimer()">Start Contraction</button>
+    <button class="stop" onclick="stopTimer()">Stop</button>
+    <button class="reset" onclick="resetTimer()">Reset</button>
+
+    <h2>Breathing Guide</h2>
+    <p class="breathing" id="breathingText">Deep, slow breaths...</p>
+    <button onclick="changeBreathing('early')">Early Labor</button>
+    <button onclick="changeBreathing('active')">Active Labor</button>
+    <button onclick="changeBreathing('transition')">Transition</button>
+    <button onclick="changeBreathing('pushing')">Pushing</button>
+
+    <h2>Affirmations</h2>
+    <p class="affirmations" id="affirmationText">"I trust my body. Each contraction brings my baby closer."</p>
+    <button onclick="newAffirmation()">New Affirmation</button>
+
+    <script>
+        let startTime, interval;
+        
+        function startTimer() {
+            if (!startTime) {
+                startTime = Date.now();
+                interval = setInterval(updateTimer, 1000);
+            }
+        }
+
+        function stopTimer() {
+            clearInterval(interval);
+            startTime = null;
+        }
+
+        function resetTimer() {
+            stopTimer();
+            document.getElementById("timer").innerText = "00:00";
+        }
+
+        function updateTimer() {
+            let elapsed = Math.floor((Date.now() - startTime) / 1000);
+            let minutes = Math.floor(elapsed / 60);
+            let seconds = elapsed % 60;
+            document.getElementById("timer").innerText = 
+                (minutes < 10 ? "0" : "") + minutes + ":" + 
+                (seconds < 10 ? "0" : "") + seconds;
+        }
+
+        function changeBreathing(stage) {
+            let text = {
+                early: "Breathe in 4 seconds, out 6 seconds. Stay calm and rest.",
+                active: "Hee-hee-hoo breathing. Stay relaxed and move around.",
+                transition: "Pant-pant-blow. Breathe through strong contractions.",
+                pushing: "Deep inhale, push with contraction, exhale slowly."
+            };
+            document.getElementById("breathingText").innerText = text[stage];
+        }
+
+        function newAffirmation() {
+            let affirmations = [
+                "I trust my body. Each contraction brings my baby closer.",
+                "I am strong. My baby and I are working together.",
+                "Breathe. Relax. Open.",
+                "I am safe. My body knows what to do.",
+                "I surrender to the power of birth."
+            ];
+            let randomIndex = Math.floor(Math.random() * affirmations.length);
+            document.getElementById("affirmationText").innerText = affirmations[randomIndex];
+        }
+    </script>
+
+</body>
+</html>
